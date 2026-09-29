@@ -3,3 +3,7 @@
 
 # macOS Finder metadata.
 .DS_Store
+
+# Installed Android build template and local Quest APK output.
+/android/
+/build/
