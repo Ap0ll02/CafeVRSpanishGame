@@ -1,17 +1,43 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scripts/drink_cup.gd" id="2_cup"]
+[ext_resource type="PackedScene" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_pickup"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+[sub_resource type="BoxMesh" id="floor_mesh"]
 size = Vector3(4, 0.1, 4)
 
-[sub_resource type="BoxMesh" id="BoxMesh_counter"]
-size = Vector3(2.2, 0.9, 0.65)
+[sub_resource type="BoxMesh" id="counter_mesh"]
+size = Vector3(2.4, 0.9, 0.8)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_cup"]
-top_radius = 0.075
-bottom_radius = 0.055
+[sub_resource type="BoxMesh" id="station_mesh"]
+size = Vector3(0.17, 0.18, 0.17)
+
+[sub_resource type="CapsuleMesh" id="customer_mesh"]
+radius = 0.28
+height = 1.7
+
+[sub_resource type="CylinderMesh" id="cup_mesh"]
+top_radius = 0.08
+bottom_radius = 0.06
 height = 0.12
+
+[sub_resource type="CylinderMesh" id="liquid_mesh"]
+top_radius = 0.069
+bottom_radius = 0.069
+height = 0.01
+
+[sub_resource type="BoxShape3D" id="floor_shape"]
+size = Vector3(4, 0.1, 4)
+
+[sub_resource type="BoxShape3D" id="counter_shape"]
+size = Vector3(2.4, 0.9, 0.8)
+
+[sub_resource type="SphereShape3D" id="cup_shape"]
+radius = 0.08
+
+[sub_resource type="BoxShape3D" id="station_shape"]
+size = Vector3(0.22, 0.3, 0.24)
 
 [node name="CafePrototype" type="Node3D"]
 script = ExtResource("1_main")
@@ -25,24 +51,141 @@ current = true
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 tracker = "left_hand"
 
+[node name="Pickup" parent="XROrigin3D/LeftHand" instance=ExtResource("3_pickup")]
+ranged_enable = false
+
 [node name="RightHand" type="XRController3D" parent="XROrigin3D"]
 tracker = "right_hand"
 
-[node name="Floor" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_floor")
+[node name="Pickup" parent="XROrigin3D/RightHand" instance=ExtResource("3_pickup")]
+ranged_enable = false
 
-[node name="Counter" type="MeshInstance3D" parent="."]
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("floor_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("floor_shape")
+
+[node name="Counter" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -0.8)
-mesh = SubResource("BoxMesh_counter")
 
-[node name="CupPlaceholder" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.96, -0.8)
-mesh = SubResource("CylinderMesh_cup")
+[node name="Mesh" type="MeshInstance3D" parent="Counter"]
+mesh = SubResource("counter_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Counter"]
+shape = SubResource("counter_shape")
+
+[node name="Cup" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.05, -0.8)
+collision_layer = 4
+collision_mask = 1
+mass = 0.2
+freeze_mode = 1
+script = ExtResource("2_cup")
+
+[node name="Mesh" type="MeshInstance3D" parent="Cup"]
+mesh = SubResource("cup_mesh")
+
+[node name="Liquid" type="MeshInstance3D" parent="Cup"]
+visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.055, 0)
+mesh = SubResource("liquid_mesh")
+
+[node name="ContentsLabel" type="Label3D" parent="Cup"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.17, 0)
+pixel_size = 0.002
+text = "vacía"
+billboard = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Cup"]
+shape = SubResource("cup_shape")
+
+[node name="RinseArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.08, -0.8)
+collision_mask = 65540
+
+[node name="Mesh" type="MeshInstance3D" parent="RinseArea"]
+mesh = SubResource("station_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="RinseArea"]
+shape = SubResource("station_shape")
+
+[node name="Label" type="Label3D" parent="RinseArea"]
+position = Vector3(0, 0.3, 0)
+text = "LAVAR"
+
+[node name="CoffeeArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.55, 1.08, -0.8)
+collision_mask = 65540
+
+[node name="Mesh" type="MeshInstance3D" parent="CoffeeArea"]
+mesh = SubResource("station_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="CoffeeArea"]
+shape = SubResource("station_shape")
+
+[node name="Label" type="Label3D" parent="CoffeeArea"]
+position = Vector3(0, 0.3, 0)
+text = "CAFÉ"
+
+[node name="MilkArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 1.08, -0.8)
+collision_mask = 65540
+
+[node name="Mesh" type="MeshInstance3D" parent="MilkArea"]
+mesh = SubResource("station_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="MilkArea"]
+shape = SubResource("station_shape")
+
+[node name="Label" type="Label3D" parent="MilkArea"]
+position = Vector3(0, 0.3, 0)
+text = "LECHE"
+
+[node name="SugarArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.08, -0.8)
+collision_mask = 65540
+
+[node name="Mesh" type="MeshInstance3D" parent="SugarArea"]
+mesh = SubResource("station_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="SugarArea"]
+shape = SubResource("station_shape")
+
+[node name="Label" type="Label3D" parent="SugarArea"]
+position = Vector3(0, 0.3, 0)
+text = "AZÚCAR"
+
+[node name="DeliveryArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 1.08, -0.8)
+collision_mask = 65540
+
+[node name="Mesh" type="MeshInstance3D" parent="DeliveryArea"]
+mesh = SubResource("station_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="DeliveryArea"]
+shape = SubResource("station_shape")
+
+[node name="Label" type="Label3D" parent="DeliveryArea"]
+position = Vector3(0, 0.3, 0)
+text = "ENTREGA"
 
 [node name="CustomerPlaceholder" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -2)
-mesh = SubResource("CylinderMesh_cup")
-scale = Vector3(3, 12, 3)
+position = Vector3(0, 0.85, -1.85)
+mesh = SubResource("customer_mesh")
+
+[node name="OrderLabel" type="Label3D" parent="."]
+position = Vector3(0, 2.0, -1.7)
+pixel_size = 0.003
+text = ""
+
+[node name="FeedbackLabel" type="Label3D" parent="."]
+position = Vector3(0, 1.65, -1.7)
+pixel_size = 0.003
+text = ""
 
 [node name="Light" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, -0.5, -0.5, 0, 0.707107, -0.707107, 0.707107, 0.5, 0.5, 0, 2, 0)
