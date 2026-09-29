@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Script" path="res://scripts/drink_cup.gd" id="2_cup"]
@@ -13,14 +13,26 @@ size = Vector3(2.4, 0.9, 0.8)
 [sub_resource type="BoxMesh" id="station_mesh"]
 size = Vector3(0.17, 0.18, 0.17)
 
+[sub_resource type="SphereMesh" id="hand_marker"]
+radius = 0.04
+height = 0.08
+
 [sub_resource type="CapsuleMesh" id="customer_mesh"]
 radius = 0.28
 height = 1.7
 
 [sub_resource type="CylinderMesh" id="cup_mesh"]
-top_radius = 0.08
-bottom_radius = 0.06
-height = 0.12
+top_radius = 0.1
+bottom_radius = 0.08
+height = 0.18
+
+[sub_resource type="TorusMesh" id="cup_handle"]
+inner_radius = 0.035
+outer_radius = 0.06
+
+[sub_resource type="StandardMaterial3D" id="cup_material"]
+albedo_color = Color(0.08, 0.77, 0.9, 1)
+roughness = 0.35
 
 [sub_resource type="CylinderMesh" id="liquid_mesh"]
 top_radius = 0.069
@@ -34,7 +46,7 @@ size = Vector3(4, 0.1, 4)
 size = Vector3(2.4, 0.9, 0.8)
 
 [sub_resource type="SphereShape3D" id="cup_shape"]
-radius = 0.08
+radius = 0.11
 
 [sub_resource type="BoxShape3D" id="station_shape"]
 size = Vector3(0.22, 0.3, 0.24)
@@ -50,15 +62,27 @@ current = true
 
 [node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
 tracker = "left_hand"
+pose = "grip"
+
+[node name="HandMarker" type="MeshInstance3D" parent="XROrigin3D/LeftHand"]
+mesh = SubResource("hand_marker")
 
 [node name="Pickup" parent="XROrigin3D/LeftHand" instance=ExtResource("3_pickup")]
+grab_distance = 0.3
 ranged_enable = false
+impulse_factor = 0.0
 
 [node name="RightHand" type="XRController3D" parent="XROrigin3D"]
 tracker = "right_hand"
+pose = "grip"
+
+[node name="HandMarker" type="MeshInstance3D" parent="XROrigin3D/RightHand"]
+mesh = SubResource("hand_marker")
 
 [node name="Pickup" parent="XROrigin3D/RightHand" instance=ExtResource("3_pickup")]
+grab_distance = 0.3
 ranged_enable = false
+impulse_factor = 0.0
 
 [node name="Floor" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
@@ -79,7 +103,7 @@ mesh = SubResource("counter_mesh")
 shape = SubResource("counter_shape")
 
 [node name="Cup" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.05, -0.8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 1.05, -0.5)
 collision_layer = 4
 collision_mask = 1
 mass = 0.2
@@ -88,6 +112,13 @@ script = ExtResource("2_cup")
 
 [node name="Mesh" type="MeshInstance3D" parent="Cup"]
 mesh = SubResource("cup_mesh")
+material_override = SubResource("cup_material")
+
+[node name="Handle" type="MeshInstance3D" parent="Cup"]
+position = Vector3(0.13, 0, 0)
+rotation = Vector3(1.5708, 0, 0)
+mesh = SubResource("cup_handle")
+material_override = SubResource("cup_material")
 
 [node name="Liquid" type="MeshInstance3D" parent="Cup"]
 visible = false
@@ -115,6 +146,7 @@ shape = SubResource("station_shape")
 
 [node name="Label" type="Label3D" parent="RinseArea"]
 position = Vector3(0, 0.3, 0)
+pixel_size = 0.002
 text = "LAVAR"
 
 [node name="CoffeeArea" type="Area3D" parent="."]
@@ -129,6 +161,7 @@ shape = SubResource("station_shape")
 
 [node name="Label" type="Label3D" parent="CoffeeArea"]
 position = Vector3(0, 0.3, 0)
+pixel_size = 0.002
 text = "CAFÉ"
 
 [node name="MilkArea" type="Area3D" parent="."]
@@ -143,6 +176,7 @@ shape = SubResource("station_shape")
 
 [node name="Label" type="Label3D" parent="MilkArea"]
 position = Vector3(0, 0.3, 0)
+pixel_size = 0.002
 text = "LECHE"
 
 [node name="SugarArea" type="Area3D" parent="."]
@@ -157,6 +191,7 @@ shape = SubResource("station_shape")
 
 [node name="Label" type="Label3D" parent="SugarArea"]
 position = Vector3(0, 0.3, 0)
+pixel_size = 0.002
 text = "AZÚCAR"
 
 [node name="DeliveryArea" type="Area3D" parent="."]
@@ -171,6 +206,7 @@ shape = SubResource("station_shape")
 
 [node name="Label" type="Label3D" parent="DeliveryArea"]
 position = Vector3(0, 0.3, 0)
+pixel_size = 0.002
 text = "ENTREGA"
 
 [node name="CustomerPlaceholder" type="MeshInstance3D" parent="."]
@@ -179,12 +215,12 @@ mesh = SubResource("customer_mesh")
 
 [node name="OrderLabel" type="Label3D" parent="."]
 position = Vector3(0, 2.0, -1.7)
-pixel_size = 0.003
+pixel_size = 0.002
 text = ""
 
 [node name="FeedbackLabel" type="Label3D" parent="."]
 position = Vector3(0, 1.65, -1.7)
-pixel_size = 0.003
+pixel_size = 0.002
 text = ""
 
 [node name="Light" type="DirectionalLight3D" parent="."]

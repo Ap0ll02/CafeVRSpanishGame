@@ -7,9 +7,23 @@ var drink_type: String = ""
 var milk: bool = false
 var sugar: bool = false
 
+var _spawn_transform: Transform3D
+
 @onready var liquid: MeshInstance3D = $Liquid
 @onready var contents_label: Label3D = $ContentsLabel
 
+
+func _ready() -> void:
+	super._ready()
+	_spawn_transform = global_transform
+
+
+func _physics_process(_delta: float) -> void:
+	if is_picked_up() or global_position.y >= 0.5:
+		return
+	linear_velocity = Vector3.ZERO
+	angular_velocity = Vector3.ZERO
+	global_transform = _spawn_transform
 
 func add_coffee() -> void:
 	drink_type = "café"
