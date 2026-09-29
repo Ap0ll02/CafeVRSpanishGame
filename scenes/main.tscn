@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(4, 0.1, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_counter"]
+size = Vector3(2.2, 0.9, 0.65)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cup"]
+top_radius = 0.075
+bottom_radius = 0.055
+height = 0.12
+
+[node name="CafePrototype" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65, 0)
+current = true
+
+[node name="LeftHand" type="XRController3D" parent="XROrigin3D"]
+tracker = "left_hand"
+
+[node name="RightHand" type="XRController3D" parent="XROrigin3D"]
+tracker = "right_hand"
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_floor")
+
+[node name="Counter" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -0.8)
+mesh = SubResource("BoxMesh_counter")
+
+[node name="CupPlaceholder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.96, -0.8)
+mesh = SubResource("CylinderMesh_cup")
+
+[node name="CustomerPlaceholder" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, -2)
+mesh = SubResource("CylinderMesh_cup")
+scale = Vector3(3, 12, 3)
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.5, -0.5, 0, 0.707107, -0.707107, 0.707107, 0.5, 0.5, 0, 2, 0)
+light_energy = 1.5
