@@ -2,6 +2,11 @@
 
 Godot 4.4.1 OpenXR project (Quest Pro, GL Compatibility) for the ERVR paper. Read `README.md` for gameplay and project layout.
 
+## Change budget (hard limit)
+- Edit at most **4 files** and make at most **300 changed lines** (added plus removed) per task before stopping to let the user review.
+- Count as you go. If a task needs more, stop at the limit, say what's done and what remains, and wait for the user to say continue. A continue starts a fresh budget.
+- Importing assets and generated files (`.import`, `.uid`) don't count, but say so when they appear in the diff.
+
 ## Testing: what works and what doesn't
 - **The Mac cannot run the game in XR.** Editor Play only shows a flat desktop window. Real testing means exporting an APK and installing it on the Quest (commands in `README.md`).
 - **Do not run Godot `--script` / `--check-only` / `-s` headless runs.** They hang forever on this machine and print nothing; earlier sessions burned a lot of time on this. `--import` and `--export-debug` work fine.
