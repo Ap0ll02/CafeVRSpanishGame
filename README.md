@@ -4,11 +4,14 @@ Quest Pro café prototype. Customers walk up to the counter and order a coffee i
 
 ## How to play
 
+0. First comes a short **English tutorial**: a medium coffee with milk, then a small black coffee with sugar. A hint above the counter tells you the next step.
 1. A customer walks in and says their order (for example, "Quisiera un café mediano con leche, sin azúcar.").
 2. Grab the cup that matches the size: **pequeño** (espresso cup), **mediano** (cappuccino cup) or **grande** (tall cup).
 3. Touch **CAFÉ**, then **LECHE** and/or **AZÚCAR** as ordered. **LAVAR** empties the cup.
 4. Release the cup at **ENTREGA**. A wrong drink gets a hint in Spanish; a correct one gets "¡Perfecto, muchas gracias!"
-5. The cup flies to the customer and disappears, they wave and walk off, and the next customer (new outfit, new order) walks in. A fresh empty cup returns to its spot.
+5. Two more customers wait in line to the right and step up as each one finishes.
+6. The cup flies to the customer and disappears, confetti pops, they wave and walk off through the left doorway, and a new customer (new outfit, new order) joins the line. A fresh empty cup returns to its spot.
+7. **Money:** a correct order sells for $5, halved for every mistake, minus $1 of ingredients for every drink you made. A perfect order is +$4.00; one mistake is +$0.50 (you can lose money). The cash total is shown on the wall.
 
 A cup that falls off the counter returns to its starting position.
 
