@@ -1,6 +1,28 @@
 # Café Listening VR
 
-First playable Quest Pro prototype: grab the blue cup, touch **CAFÉ** and **LECHE**, skip **AZÚCAR**, then release the cup at **ENTREGA**. A correct order gets “¡Perfecto, muchas gracias!” The cup returns to its starting position if it falls off the counter.
+Quest Pro café prototype. Customers walk up to the counter and order a coffee in Spanish; make it in the right cup size, then release the cup at **ENTREGA**.
+
+## How to play
+
+1. A customer walks in and says their order (for example, "Quisiera un café mediano con leche, sin azúcar.").
+2. Grab the cup that matches the size: **pequeño** (espresso cup), **mediano** (cappuccino cup) or **grande** (tall cup).
+3. Touch **CAFÉ**, then **LECHE** and/or **AZÚCAR** as ordered. **LAVAR** empties the cup.
+4. Release the cup at **ENTREGA**. A wrong drink gets a hint in Spanish; a correct one gets "¡Perfecto, muchas gracias!"
+5. The cup flies to the customer and disappears, they wave and walk off, and the next customer (new outfit, new order) walks in. A fresh empty cup returns to its spot.
+
+A cup that falls off the counter returns to its starting position.
+
+## Project layout
+
+- `scripts/main.gd`: order list, customer walk-in/out loop, station triggers, delivery checking, and scene dressing.
+- `scripts/drink_cup.gd`: pickable cup; per-size models and liquid settings live in `SIZE_SPECS`.
+- `scripts/cafe_assets.gd`: pulls named props out of the café pack and fits them to a target size; builds the customer character.
+- `assets/cafe/`: café asset pack. Keep the original file names, because the FBX finds its atlas and palette textures by name.
+- `assets/characters/`: Quaternius character FBXs (`all_together.fbx` is the one in use).
+
+To add an order, add an entry to `ORDERS` in `scripts/main.gd`. To change customer outfits, edit `OUTFITS` (names come from the character FBX, such as `Casual` or `Formal`).
+
+Desktop Play in the editor only shows the scene in a window, because Quest Pro needs the headset build below.
 
 ## Build on this Mac
 
