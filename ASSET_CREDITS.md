@@ -17,3 +17,10 @@
 - **Contents:** Each ZIP contains one FBX scene and its original `.blend` project. The first has `Humans_Master.fbx` with character variants including Casual, Casual2, Beach, Farmer, King, and Adventurer. The second has `All together.fbx` with variants including Casual, Formal, Medieval, and Adventurer. Both FBX files contain a `CharacterArmature` and animation names including Idle, Walk, Wave, and Interact.
 - **Intended use:** One customer model with an idle pose and, if import works cleanly, a simple reaction animation.
 - **Notes:** The archives were extracted to a temporary inspection directory only. Their original files remain unchanged. Confirm the exact source and license before packaging or sharing a build that includes them.
+
+## Café music
+
+- **Supplied files:** `andriih-cafe-cafe-music-571629.mp3` and `zephiramusic-cafe-lofi-591791.mp3` (copied to `assets/music/` as `cafe_music_andriih.mp3` and `cafe_lofi_zephira.mp3`).
+- **Author/source:** The file names suggest the artists "andriih" and "zephiramusic", likely downloaded from Pixabay. The download page was not recorded.
+- **License:** Unverified. If they are from Pixabay, the Pixabay Content License applies, but confirm on the original track pages before distributing a build.
+- **Use:** Quiet looping background music; the two tracks alternate.

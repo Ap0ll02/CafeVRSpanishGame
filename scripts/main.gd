@@ -27,6 +27,11 @@ const TUTORIAL: Array = [
 		"english": "Now make a SMALL black coffee with sugar.",
 	},
 ]
+const MUSIC: Array = [
+	"res://assets/music/cafe_music_andriih.mp3",
+	"res://assets/music/cafe_lofi_zephira.mp3",
+]
+const MUSIC_VOLUME_DB: float = -14.0
 const OUTFITS: Array = ["Casual", "Formal", "Medieval", "Adventurer", "Worker", "Punk"]
 const CUSTOMER_Z: float = -1.85
 const ENTRY_X: float = 4.8 # doorways in the side walls
@@ -51,6 +56,8 @@ var line: Array[Dictionary] = []
 var next_index: int = 0
 var money: float = 0.0
 var money_label: Label3D
+var music: AudioStreamPlayer
+var music_index: int = 0
 var _last_profit: float = 0.0
 var tutorial_active: bool = false
 var _hint_hold_until: int = 0
@@ -81,7 +88,23 @@ func _ready() -> void:
 	money_label.modulate = Color("ffd54a")
 	money_label.position = Vector3(-1.3, 1.9, -1.3)
 	add_child(money_label)
+	_start_music()
 	_customer_loop()
+
+
+## Background café music: the tracks play one after another, forever.
+func _start_music() -> void:
+	music = AudioStreamPlayer.new()
+	music.volume_db = MUSIC_VOLUME_DB
+	add_child(music)
+	music.finished.connect(_play_next_track)
+	_play_next_track()
+
+
+func _play_next_track() -> void:
+	music.stream = load(MUSIC[music_index % MUSIC.size()])
+	music.play()
+	music_index += 1
 
 
 ## The scene's original Cup becomes the mediano cup; the other sizes are copies.
